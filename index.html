@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圣诞帽头像生成器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎄 小伙伴，圣诞节快乐！🎅</h1>
+            <p class="subtitle">领取属于你的专属圣诞帽</p>
+            <p class="greeting">上传头像，让AI为你戴上节日的祝福 ✨</p>
+        </header>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="preview-container" id="previewContainer">
+                    <img src="default.jpg" alt="圣诞帽效果预览" id="previewImage">
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    <div class="loading" id="loading" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>正在检测人脸...</p>
+                    </div>
+                </div>
+
+                <div class="upload-section">
+                    <input type="file" id="imageUpload" accept="image/*" hidden>
+                    <label for="imageUpload" class="upload-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        选择头像
+                    </label>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="controls" id="controls" style="display: none;">
+            <div class="slider-group">
+                <label>帽子样式:</label>
+                <div class="hat-style-selector">
+                    <button class="hat-style-btn active" data-hat="christmas-hat.svg">
+                        <span class="hat-icon" style="background: #DC143C;"></span>
+                        经典红帽
+                    </button>
+                    <button class="hat-style-btn" data-hat="hat.png">
+                        <span class="hat-icon" style="background: #C41E3A;"></span>
+                        红帽样式1
+                    </button>
+                    <button class="hat-style-btn" data-hat="hat1.png">
+                        <span class="hat-icon" style="background: #8B0000;"></span>
+                        红帽样式2
+                    </button>
+                </div>
+            </div>
+            <div class="slider-group">
+                <label>帽子大小: <span id="sizeValue">2.2</span></label>
+                <input type="range" id="hatSize" min="1.5" max="3.5" step="0.1" value="2.2">
+            </div>
+            <div class="slider-group">
+                <label>垂直位置: <span id="offsetValue">0.2</span></label>
+                <input type="range" id="hatOffset" min="0" max="0.8" step="0.05" value="0.2">
+            </div>
+            <div class="slider-group">
+                <label>水平位置: <span id="horizontalValue">0</span></label>
+                <input type="range" id="hatHorizontal" min="-50" max="50" step="1" value="0">
+            </div>
+            <div class="slider-group">
+                <label>旋转角度: <span id="rotationValue">0</span>°</label>
+                <input type="range" id="hatRotation" min="-30" max="30" step="1" value="0">
+            </div>
+            <button id="downloadBtn" class="download-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                下载头像
+            </button>
+        </div>
+            </div>
+        </div>
+
+        <div class="info">
+            <p>🎁 分享给朋友，一起过个温暖的圣诞节</p>
+            <p>🔒 纯前端处理，图片不会上传到服务器，隐私安全</p>
+            <p>🎯 使用 MediaPipe Face Mesh 智能人脸检测技术</p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@mediapipe/face_mesh@0.4.1633559619/face_mesh.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@mediapipe/camera_utils@0.3.1632432234/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@mediapipe/drawing_utils@0.3.1620248257/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
+</body>
+</html>

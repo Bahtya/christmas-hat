@@ -1,0 +1,24 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="redGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF0000;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#CC0000;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="whiteGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E0E0E0;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Main hat triangle -->
+  <path d="M 200 50 L 80 300 L 320 300 Z" fill="url(#redGradient)" stroke="#990000" stroke-width="2"/>
+  
+  <!-- White fur trim at bottom -->
+  <ellipse cx="200" cy="300" rx="130" ry="20" fill="url(#whiteGradient)"/>
+  
+  <!-- Pom-pom at top -->
+  <circle cx="200" cy="50" r="30" fill="url(#whiteGradient)" stroke="#D0D0D0" stroke-width="1"/>
+  
+  <!-- Shadow/depth on hat -->
+  <path d="M 200 50 L 200 300 L 320 300 Z" fill="#000000" opacity="0.1"/>
+</svg>

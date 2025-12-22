@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>转换图片为Base64</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .output {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        button {
+            background: #C41E3A;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #A01D28;
+        }
+        .preview {
+            margin: 20px 0;
+        }
+        .preview img {
+            max-width: 200px;
+            border: 2px solid #ddd;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎄 图片转Base64工具</h1>
+    <p>这个工具会将 hat.png 和 hat1.png 转换为 base64 编码，用于解决CORS跨域问题。</p>
+    
+    <button onclick="convertImages()">开始转换</button>
+    <button onclick="copyToClipboard()">复制代码</button>
+    
+    <div class="preview" id="preview"></div>
+    
+    <h3>生成的代码（复制到 app.js 中）：</h3>
+    <div class="output" id="output">点击"开始转换"按钮...</div>
+    
+    <script>
+        let generatedCode = '';
+        
+        async function convertImages() {
+            const images = ['hat.png', 'hat1.png'];
+            let code = '// Base64 编码的帽子图片（用于解决CORS问题）\nconst HAT_DATA_URLS = {\n';
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '<h3>预览：</h3>';
+            
+            for (const imgFile of images) {
+                try {
+                    const response = await fetch(imgFile);
+                    const blob = await response.blob();
+                    const base64 = await blobToBase64(blob);
+                    
+                    const key = imgFile.replace('.png', '').replace('-', '_');
+                    code += `    '${imgFile}': '${base64}',\n`;
+                    
+                    // 添加预览
+                    const img = document.createElement('img');
+                    img.src = base64;
+                    img.alt = imgFile;
+                    img.title = imgFile;
+                    preview.appendChild(img);
+                    
+                    console.log(`✅ ${imgFile} 转换成功`);
+                } catch (error) {
+                    console.error(`❌ ${imgFile} 转换失败:`, error);
+                    code += `    // '${imgFile}': 'ERROR - 文件未找到',\n`;
+                }
+            }
+            
+            code += '};\n\n';
+            code += '// 在 loadHatImages() 函数中使用：\n';
+            code += '// if (HAT_DATA_URLS[hatFile]) {\n';
+            code += '//     img.src = HAT_DATA_URLS[hatFile];\n';
+            code += '// } else {\n';
+            code += '//     img.src = hatFile;\n';
+            code += '// }\n';
+            
+            generatedCode = code;
+            document.getElementById('output').textContent = code;
+        }
+        
+        function blobToBase64(blob) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        }
+        
+        function copyToClipboard() {
+            if (!generatedCode) {
+                alert('请先点击"开始转换"按钮');
+                return;
+            }
+            
+            navigator.clipboard.writeText(generatedCode).then(() => {
+                alert('✅ 代码已复制到剪贴板！\n\n请将其粘贴到 app.js 文件顶部。');
+            }).catch(err => {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制输出框中的代码');
+            });
+        }
+    </script>
+</body>
+</html>

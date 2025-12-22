@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Default Demo Image</title>
+</head>
+<body>
+    <canvas id="demoCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('demoCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        ctx.fillStyle = '#F5F5F5';
+        ctx.fillRect(0, 0, 800, 600);
+        
+        ctx.fillStyle = '#E0E0E0';
+        ctx.beginPath();
+        ctx.arc(400, 280, 150, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = '#666';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('👤', 400, 300);
+        
+        ctx.fillStyle = '#DC143C';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetX = 3;
+        ctx.shadowOffsetY = 3;
+        ctx.beginPath();
+        ctx.moveTo(400, 100);
+        ctx.lineTo(320, 220);
+        ctx.lineTo(480, 220);
+        ctx.closePath();
+        ctx.fill();
+        
+        ctx.shadowColor = 'transparent';
+        const gradient = ctx.createLinearGradient(0, 210, 0, 230);
+        gradient.addColorStop(0, '#FFFFFF');
+        gradient.addColorStop(1, '#E8E8E8');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(320, 210, 160, 15);
+        
+        const radialGradient = ctx.createRadialGradient(400, 100, 0, 400, 100, 20);
+        radialGradient.addColorStop(0, '#FFFFFF');
+        radialGradient.addColorStop(1, '#E0E0E0');
+        ctx.fillStyle = radialGradient;
+        ctx.beginPath();
+        ctx.arc(400, 100, 20, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 32px Arial';
+        ctx.fillText('圣诞帽效果预览', 400, 500);
+        ctx.fillStyle = '#666';
+        ctx.font = '20px Arial';
+        ctx.fillText('上传头像，自动添加圣诞帽', 400, 540);
+        
+        setTimeout(() => {
+            canvas.toBlob((blob) => {
+                const link = document.createElement('a');
+                link.download = 'default.jpg';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                document.body.innerHTML = '<h2>default.jpg 已生成并下载！</h2><p>演示效果图，显示头像+圣诞帽</p>';
+            }, 'image/jpeg', 0.9);
+        }, 100);
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Christmas Hat PNG</title>
+</head>
+<body>
+    <canvas id="hatCanvas" width="400" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('hatCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        ctx.fillStyle = '#DC143C';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetX = 5;
+        ctx.shadowOffsetY = 5;
+        
+        ctx.beginPath();
+        ctx.moveTo(200, 50);
+        ctx.lineTo(80, 300);
+        ctx.lineTo(320, 300);
+        ctx.closePath();
+        ctx.fill();
+        
+        ctx.shadowColor = 'transparent';
+        
+        const gradient = ctx.createLinearGradient(0, 280, 0, 320);
+        gradient.addColorStop(0, '#FFFFFF');
+        gradient.addColorStop(1, '#E8E8E8');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(80, 280, 240, 30);
+        
+        const radialGradient = ctx.createRadialGradient(200, 50, 0, 200, 50, 30);
+        radialGradient.addColorStop(0, '#FFFFFF');
+        radialGradient.addColorStop(1, '#E0E0E0');
+        ctx.fillStyle = radialGradient;
+        ctx.beginPath();
+        ctx.arc(200, 50, 30, 0, Math.PI * 2);
+        ctx.fill();
+        
+        setTimeout(() => {
+            const link = document.createElement('a');
+            link.download = 'hat.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            document.body.innerHTML = '<h2>hat.png 已生成并下载！</h2><p>经典红色圣诞帽</p>';
+        }, 100);
+    </script>
+</body>
+</html>
