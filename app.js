@@ -37,28 +37,39 @@ class ChristmasHatApp {
     }
     
     async loadHatImages() {
-        const hatFiles = ['christmas-hat.svg', 'hat.png', 'hat1.png'];
-        const loadPromises = hatFiles.map(hatFile => {
-            return new Promise((resolve) => {
-                const img = new Image();
-                // 移除 crossOrigin 以避免 CORS 问题
-                // 注意：这样加载的图片无法用于 toDataURL()，但可以正常绘制到 canvas
-                img.onload = () => {
-                    this.hatImages[hatFile] = img;
-                    console.log(`✅ ${hatFile} 加载成功`);
-                    resolve();
-                };
-                img.onerror = () => {
-                    console.error(`❌ ${hatFile} 加载失败，使用备用帽子`);
-                    this.createFallbackHat(hatFile);
-                    resolve();
-                };
-                // 使用相对路径，让浏览器自然处理
+    const hatFiles = ['christmas-hat.svg', 'hat.png', 'hat1.png'];
+
+    for (const hatFile of hatFiles) {
+        try {
+            const img = new Image();
+
+            // ❌ 不使用 crossOrigin，避免加载失败
+            await new Promise((res, rej) => {
+                img.onload = res;
+                img.onerror = rej;
                 img.src = hatFile;
             });
-        });
-        await Promise.all(loadPromises);
+
+            // 👇 用“中转 canvas”洗白
+            const tmpCanvas = document.createElement('canvas');
+            tmpCanvas.width = img.width;
+            tmpCanvas.height = img.height;
+            tmpCanvas.getContext('2d').drawImage(img, 0, 0);
+
+            const safeImg = new Image();
+            safeImg.src = tmpCanvas.toDataURL('image/png');
+
+            this.hatImages[hatFile] = safeImg;
+
+            console.log(`✅ ${hatFile} 已转为安全图片`);
+
+        } catch (e) {
+            console.warn(`⚠️ ${hatFile} 转换失败，使用备用帽子`);
+            this.createFallbackHat(hatFile);
+        }
     }
+}
+
     
     createFallbackHat(hatFile) {
         const fallbackCanvas = document.createElement('canvas');
